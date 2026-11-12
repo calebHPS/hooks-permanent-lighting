@@ -47,8 +47,8 @@ def jobber_embed():
 
 
 def brand(rel):
-    return ('<a class="brand" href="%s" aria-label="%s home"><span class="b1">HOOKS</span>'
-            '<span class="b2">PERMANENT LIGHTING</span></a>' % (rel or "./", NAME))
+    return ('<a class="brand" href="%s" aria-label="%s home"><img src="%sassets/logo.png" alt="%s logo" '
+            'width="96" height="100"></a>' % (rel or "./", NAME, rel, NAME))
 
 
 def head(title, desc, path, rel, image="assets/permanent-lighting.jpg"):
