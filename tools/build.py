@@ -20,7 +20,7 @@ PARENT_URL = "https://www.hookspropertyservices.com"   # cross-advertising targe
 PARENT_NAME = "Hooks Property Services"
 
 # Leave PHONE / EMAIL empty to hide them everywhere (quote form only).
-PHONE_DISPLAY = ""          # e.g. "717-555-0123"
+PHONE_DISPLAY = "843-685-0747"   # HPS number (Reaves) - temporary until HPL has its own
 EMAIL = ""                  # e.g. "hello@hookspermanentlighting.com"
 PHONE_TEL = "".join(c for c in PHONE_DISPLAY if c.isdigit())
 
