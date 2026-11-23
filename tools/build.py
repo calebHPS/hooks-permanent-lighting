@@ -26,6 +26,30 @@ PHONE_TEL = "".join(c for c in PHONE_DISPLAY if c.isdigit())
 
 SERVICE_AREA = "Lancaster, PA"
 
+# Google Business Profile (still in draft/verification). Paste the public profile link
+# (e.g. https://g.page/... or https://maps.app.goo.gl/...) once verified. Blank = hidden.
+GBP_URL = ""
+# Direct "write a review" link from the GBP dashboard (Get more reviews > Share review form).
+GOOGLE_REVIEW_URL = ""
+
+# Social profiles. Fill in a URL to show it in the footer and in the schema markup; blank = hidden.
+SOCIAL = {
+    "Facebook": "",
+    "Instagram": "",
+    "YouTube": "",
+    "Nextdoor": "",
+}
+
+# Reviews block on the home page. Hidden until SHOW_REVIEWS = True.
+# REVIEWS below is DUMMY placeholder data -- replace with real Google reviews (with the
+# reviewer's OK) before switching this on.
+SHOW_REVIEWS = False
+REVIEWS = [
+    ("Sample Customer A", 5, "Placeholder review text. Replace with a real Google review before going live."),
+    ("Sample Customer B", 5, "Placeholder review text. Replace with a real Google review before going live."),
+    ("Sample Customer C", 5, "Placeholder review text. Replace with a real Google review before going live."),
+]
+
 # Jobber "Work Request" embed (Jobber > Settings > Work Request Settings > Embed).
 # Same form the HPS permanent-lighting page uses today.
 JOBBER_ID = "5e6214d9-5ba9-47c7-82db-7aa4a62b9021-5330346"
@@ -62,6 +86,11 @@ def head(title, desc, path, rel, image="assets/permanent-lighting.jpg"):
         ld["telephone"] = "+1-" + PHONE_DISPLAY
     if EMAIL:
         ld["email"] = EMAIL
+    same = [u for u in [GBP_URL] + list(SOCIAL.values()) if u]
+    if same:
+        ld["sameAs"] = same
+    if GBP_URL:
+        ld["hasMap"] = GBP_URL
     return f"""<!doctype html>
 <html lang="en-US">
 <head>
@@ -98,12 +127,15 @@ def top(rel, current, home=False):
     cur = ' aria-current="page"'
     links = "".join(
         f'<a href="{rel}{p}"{cur if p == current else ""}>{label}</a>' for p, label in NAV)
+    hp = (f'<a class="hdr-phone" href="tel:{PHONE_TEL}" aria-label="Call {PHONE_DISPLAY}">'
+          f'<img src="{rel}assets/phone-icon.png" alt="" width="22" height="22"><span>{PHONE_DISPLAY}</span></a>') if PHONE_TEL else ""
     return f"""<body class="{'home' if home else 'inner'}">
 <div class="announce" id="announce">{ann}<button type="button" aria-label="Close Announcement" onclick="document.getElementById('announce').remove()">&times;</button></div>
 <header class="site-header">
   {brand(rel)}
-  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)">&#9776;</button>
   <nav id="nav">{links}<a class="btn btn-sm" href="{rel}contact-us/">Get A Quote</a></nav>
+  {hp}
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" onclick="var n=document.getElementById('nav');var o=n.classList.toggle('open');this.setAttribute('aria-expanded',o)">&#9776;</button>
 </header>
 <main>
 """
@@ -120,6 +152,32 @@ def contact_block(rel):
     return out
 
 
+def online_links():
+    items = []
+    if GBP_URL:
+        items.append(f'<a href="{GBP_URL}" target="_blank" rel="noopener">Google Business Profile</a>')
+    items += [f'<a href="{u}" target="_blank" rel="noopener me">{n}</a>' for n, u in SOCIAL.items() if u]
+    if not items:
+        return ""
+    return '<h4 style="margin-top:22px">Find Us Online</h4>' + "".join(f"<p>{i}</p>" for i in items)
+
+
+def reviews_section():
+    if not SHOW_REVIEWS or not REVIEWS:
+        return ""
+    cards = "".join(
+        f'<figure class="review"><div class="stars" aria-label="{n} out of 5 stars">{"&#9733;" * n}</div>'
+        f'<blockquote>{t}</blockquote><figcaption>{who}</figcaption></figure>' for who, n, t in REVIEWS)
+    links = ""
+    if GBP_URL:
+        links += f'<a class="btn" href="{GBP_URL}" target="_blank" rel="noopener">See Our Google Reviews</a>'
+    if GOOGLE_REVIEW_URL:
+        links += f'<a class="btn btn-outline" href="{GOOGLE_REVIEW_URL}" target="_blank" rel="noopener">Leave a Review</a>'
+    links = f'<p class="center btns" style="justify-content:center;margin-top:36px">{links}</p>' if links else ""
+    return (f'<section class="reviews pad"><div class="wrap"><h2 class="center">What Lancaster Homeowners Say</h2>'
+            f'<div class="review-grid">{cards}</div>{links}</div></section>')
+
+
 def bottom(rel):
     explore = "".join(f'<p><a href="{rel}{p}">{l}</a></p>' for p, l in NAV)
     return f"""
@@ -128,7 +186,7 @@ def bottom(rel):
   <div class="wrap foot-grid">
     <div>{brand(rel)}<p class="foot-note">An independently owned partner company of <a href="{PARENT_URL}/">{PARENT_NAME}</a>.</p></div>
     <div><h4>Contact</h4>{contact_block(rel)}</div>
-    <div><h4>Service Area</h4><p>{SERVICE_AREA}</p></div>
+    <div><h4>Service Area</h4><p>{SERVICE_AREA}</p>{online_links()}</div>
     <div><h4>Explore</h4>{explore}
       <p><a href="{PARENT_URL}/maintenance-plan/">Window Cleaning</a></p>
       <p><a href="{PARENT_URL}/christmas-lights/">Christmas Lights</a></p></div>
@@ -197,7 +255,7 @@ def home():
              ("Holiday &amp; Everyday Lighting", "Light up for the holidays, game days, or simple warm-white accent lighting any night."),
              ("Homes &amp; Businesses", "Residential and commercial installs across Lancaster, PA.")]
     feat_html = "".join(f"<article><h3>{a}</h3><p>{b}</p></article>" for a, b in feats)
-    call = (f'<a class="btn btn-ghost" href="tel:{PHONE_TEL}">Call Now</a>' if PHONE_TEL else
+    call = (f'<a class="btn btn-ghost" href="tel:{PHONE_TEL}">Call {PHONE_DISPLAY}</a>' if PHONE_TEL else
             '<a class="btn btn-ghost" href="permanent-lighting/">How It Works</a>')
     faqs = [
         ("What is permanent lighting?", "Permanent lighting is a low-profile track mounted along your roofline with programmable LED lights. You control colors, brightness, and schedules from your phone, so there&rsquo;s no hanging or taking down lights each season."),
@@ -214,6 +272,12 @@ def home():
   <p>Low-profile roofline lighting you control from your phone. Holidays, game days, or everyday curb appeal &mdash; with no more ladders and no more takedown.</p>
   <div class="btns"><a class="btn" href="contact-us/">Get a Free Quote</a>{call}</div></div>
 </section>
+
+<section class="core"><div class="wrap">
+  <div><strong>Permanent</strong><span>Installed once, lasts for years.</span></div>
+  <div><strong>Any Color, Any Holiday</strong><span>Controlled from your phone.</span></div>
+  <div><strong>Professional Install</strong><span>Insured, local, and carefully done.</span></div>
+</div></section>
 
 <section class="about wrap two">
   <div class="frame"><img src="assets/lakeside-lighting.jpg" alt="Lakeside home with permanent roofline lighting at dusk" width="540" height="360"></div>
@@ -236,6 +300,8 @@ def home():
 
 <section class="pad"><div class="wrap"><h2 class="center">How It Works</h2><ol class="steps">{steps}</ol>
   <p class="center" style="margin-top:50px"><a class="btn" href="contact-us/">Get a Free Quote</a></p></div></section>
+
+{reviews_section()}
 
 <section class="faq gray"><div class="wrap narrow"><h2 class="center">Frequently Asked Questions</h2>
   <p class="center">Still have questions? Take a look at the FAQ or send us a quote request anytime.</p>{faq_html}</div></section>

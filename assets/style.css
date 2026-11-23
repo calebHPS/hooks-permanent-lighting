@@ -125,3 +125,21 @@ details p{margin:12px 0 0}
 @media(max-width:800px){.features,.steps{grid-template-columns:1fr}.brand .b1{font-size:1.6rem}}
 .wrap.pad{padding-left:40px;padding-right:40px}
 @media(max-width:800px){.wrap.pad{padding-left:22px;padding-right:22px}}
+
+/* ---- Branding additions: header phone, core message, reviews, footer links ---- */
+.hdr-phone{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:600;white-space:nowrap;margin-left:26px}
+.hdr-phone img{width:22px;height:22px}
+@media(max-width:1100px){.site-header{gap:14px}.site-header nav{order:3}.hdr-phone{margin-left:auto}}
+@media(max-width:480px){.hdr-phone span{display:none}.hdr-phone img{width:30px;height:30px}}
+.core{background:var(--navy);color:#fff;border-top:1px solid rgba(255,255,255,.2)}
+.core .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-top:26px;padding-bottom:26px;text-align:center}
+.core strong{display:block;color:var(--yellow);font-family:'Montserrat',sans-serif;font-size:1.1rem}
+.core span{font-size:.95rem;opacity:.9}
+@media(max-width:800px){.core .wrap{grid-template-columns:1fr;gap:14px}}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:30px}
+.review{margin:0;background:var(--gray);border-top:4px solid var(--yellow);padding:26px;border-radius:4px}
+.review .stars{color:#e0a800;font-size:1.3rem;letter-spacing:2px}
+.review blockquote{margin:12px 0;font-style:italic}
+.review figcaption{font-weight:600}
+.btn-outline{background:transparent;color:var(--navy)}
+@media(max-width:800px){.review-grid{grid-template-columns:1fr}}
