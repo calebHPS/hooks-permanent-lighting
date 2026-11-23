@@ -21,7 +21,8 @@ PARENT_NAME = "Hooks Property Services"
 
 # Leave PHONE / EMAIL empty to hide them everywhere (quote form only).
 PHONE_DISPLAY = "929-270-8504"
-EMAIL = ""                  # e.g. "hello@hookspermanentlighting.com"
+EMAIL = ""                  # leave blank: the Email option links to the quote request page instead
+HIC_NUMBER = "PA235962"     # PA Home Improvement Contractor registration (shown in footer)
 PHONE_TEL = "".join(c for c in PHONE_DISPLAY if c.isdigit())
 
 SERVICE_AREA = "Lancaster, PA"
@@ -56,8 +57,7 @@ def head(title, desc, path, rel, image="assets/permanent-lighting.jpg"):
     ld = {"@context": "https://schema.org", "@type": "HomeAndConstructionBusiness",
           "name": NAME, "url": SITE, "image": SITE + "/" + image,
           "areaServed": [SERVICE_AREA],
-          "description": "Permanent roofline lighting installation in Lancaster, PA.",
-          "parentOrganization": {"@type": "Organization", "name": PARENT_NAME, "url": PARENT_URL}}
+          "description": "Permanent roofline lighting installation in Lancaster, PA."}
     if PHONE_TEL:
         ld["telephone"] = "+1-" + PHONE_DISPLAY
     if EMAIL:
@@ -113,10 +113,7 @@ def contact_block(rel):
     out = ""
     if PHONE_TEL:
         out += f'<p class="ic"><img src="{rel}assets/phone-icon.png" alt="" width="28" height="28"><a href="tel:{PHONE_TEL}">{PHONE_DISPLAY}</a></p>'
-    if EMAIL:
-        out += f'<p class="ic"><img src="{rel}assets/email-icon.png" alt="" width="28" height="28"><a href="mailto:{EMAIL}">{EMAIL}</a></p>'
-    if not out:
-        out = f'<p><a href="{rel}contact-us/">Request a free quote online</a></p>'
+    out += f'<p class="ic"><img src="{rel}assets/email-icon.png" alt="" width="28" height="28"><a href="{rel}contact-us/">Email Us</a></p>'
     return out
 
 
@@ -126,14 +123,13 @@ def bottom(rel):
 </main>
 <footer class="site-footer">
   <div class="wrap foot-grid">
-    <div>{brand(rel)}<p class="foot-note">An independently owned partner company of <a href="{PARENT_URL}/">{PARENT_NAME}</a>.</p></div>
+    <div>{brand(rel)}</div>
     <div><h4>Contact</h4>{contact_block(rel)}</div>
     <div><h4>Service Area</h4><p>{SERVICE_AREA}</p></div>
     <div><h4>Explore</h4>{explore}
-      <p><a href="{PARENT_URL}/maintenance-plan/">Window Cleaning</a></p>
       <p><a href="{PARENT_URL}/christmas-lights/">Christmas Lights</a></p></div>
   </div>
-  <p class="copy">&copy; <span id="yr">2026</span> {NAME}. All rights reserved.</p>
+  <p class="copy">&copy; <span id="yr">2026</span> {NAME}. All rights reserved.<br>PA Home Improvement Contractor Registration # {HIC_NUMBER}</p>
 </footer>
 <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 
@@ -154,7 +150,7 @@ def cta(rel, heading="Get Started Today", text=None):
 def xpromo(rel):
     return f"""<section class="xpromo gray"><div class="wrap">
   <div><h3>Need window cleaning or Christmas lights too?</h3>
-  <p>Hooks Permanent Lighting is an independently owned partner company of {PARENT_NAME}, which offers professional window cleaning and Christmas light installation in Lancaster, PA.</p></div>
+  <p>{PARENT_NAME} offers professional window cleaning and Christmas light installation in Lancaster, PA.</p></div>
   <a class="btn" href="{PARENT_URL}/">Visit {PARENT_NAME}</a></div></section>"""
 
 
@@ -205,7 +201,6 @@ def home():
         ("Can I change the colors for different holidays?", "Yes. You can switch colors, patterns, and brightness any time from your phone, and set schedules for holidays, game days, or everyday accent lighting."),
         ("Do you install on businesses too?", "Yes. We install permanent lighting for both homes and commercial properties in Lancaster, PA."),
         ("What&rsquo;s your pricing model?", "Pricing depends on the length of your roofline and the layout of your lighting. Every quote is free, with no obligation."),
-        ("Do you also offer window cleaning or Christmas lights?", f'Those services are offered by our partner company, <a href="{PARENT_URL}/">{PARENT_NAME}</a>.'),
     ]
     faq_html = "".join(f"<details><summary>{q}</summary><p>{a}</p></details>" for q, a in faqs)
     html = head(title, desc, "", rel) + top(rel, "", home=True) + f"""
@@ -218,7 +213,7 @@ def home():
 <section class="about wrap two">
   <div class="frame"><img src="assets/lakeside-lighting.jpg" alt="Lakeside home with permanent roofline lighting at dusk" width="540" height="360"></div>
   <div><p class="eyebrow">About Us</p><h2>Hooks Permanent <span class="hl">Lighting</span></h2>
-  <p>Hooks Permanent Lighting designs and installs permanent roofline lighting for homes and businesses in Lancaster, PA. We&rsquo;re an independently owned partner company of {PARENT_NAME}, and we bring the same care and attention to detail to every install.</p>
+  <p>Hooks Permanent Lighting designs and installs permanent roofline lighting for homes and businesses in Lancaster, PA. We bring care and attention to detail to every install.</p>
   <p>Every home is different, so we plan the layout around your roofline, install a clean low-profile track, and set you up to control it all from your phone. The result is lighting that looks great on day one and every night after.</p>
   <p><a class="btn" href="contact-us/">Get A Free Quote</a></p></div>
 </section>
@@ -268,7 +263,7 @@ def pl_page():
 </section>
 {quote_section(rel)}
 {xpromo(rel)}
-{cta(rel, text="Permanent lighting is installed and serviced by Hooks Permanent Lighting, an independently owned partner company of " + PARENT_NAME + ". Reliable local service you can trust.")}
+{cta(rel, text="Permanent lighting is installed and serviced by Hooks Permanent Lighting. Reliable local service you can trust.")}
 """ + bottom(rel)
     write("permanent-lighting/index.html", html)
 
@@ -280,12 +275,12 @@ def about():
     rel = "../"
     title = f"About Us | {NAME} — Lancaster, PA"
     desc = ("Hooks Permanent Lighting is a locally owned Lancaster, PA company installing permanent roofline "
-            "lighting, in partnership with Hooks Property Services.")
+            "lighting.")
     html = head(title, desc, "about-us/", rel) + top(rel, "about-us/") + f"""
 {page_title("About Us")}
 <section class="wrap two pad">
   <div><h2>Locally Owned, Carefully Installed</h2>
-  <p>Hooks Permanent Lighting is a locally owned company that designs and installs permanent roofline lighting for homes and businesses in Lancaster, PA. We&rsquo;re an independently owned partner company of {PARENT_NAME}, the window cleaning and Christmas lighting company serving Lancaster.</p>
+  <p>Hooks Permanent Lighting is a locally owned company that designs and installs permanent roofline lighting for homes and businesses in Lancaster, PA.</p>
   <p>We started Hooks Permanent Lighting because we saw how much homeowners love great lighting &mdash; and how much they dislike hanging it every year. Permanent lighting solves that, and we want every install to look clean, work reliably, and be easy to use.</p></div>
   <div><img class="photo" src="../assets/permanent-lighting.jpg" alt="Home with permanent roofline lighting" loading="lazy"></div>
 </section>
@@ -295,12 +290,6 @@ def about():
   <p>Our work is guided by a few simple values. We believe honesty builds trust, hard work earns respect, and taking ownership leads to better results. These values shape how we quote, install, and support every customer.</p>
   <ul><li>Integrity in communication and transparent pricing</li><li>Personal responsibility for every job we take on</li><li>Strong work ethic with no shortcuts</li><li>Respect for every home, property, and customer</li></ul></div>
 </div></section>
-<section class="wrap two pad">
-  <div><h2>Part of the Hooks Family</h2>
-  <p>Hooks Permanent Lighting and {PARENT_NAME} are independently owned partner companies. If you need window cleaning or seasonal Christmas light installation, {PARENT_NAME} has you covered &mdash; and if you want lighting that stays up all year, that&rsquo;s us.</p>
-  <p><a class="btn" href="{PARENT_URL}/">Visit {PARENT_NAME}</a></p></div>
-  <div><h4>Service Area:</h4><p>{SERVICE_AREA}</p><p><a class="btn" href="../contact-us/">Get A Free Quote</a></p></div>
-</section>
 {cta(rel, "Let&rsquo;s Light Up Your Home", "Request a free quote and we&rsquo;ll plan the layout for your roofline.")}
 """ + bottom(rel)
     write("about-us/index.html", html)
