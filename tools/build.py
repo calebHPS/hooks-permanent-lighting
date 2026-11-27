@@ -138,11 +138,11 @@ def bottom(rel):
 """
 
 
-def cta(rel, heading="Get Started Today", text=None):
+def cta(rel, heading="Get Started Today", text=None, img="lakeside-lighting.jpg"):
     text = text or ("Ready for year-round curb appeal without the ladder? Request a free permanent lighting quote "
                     "and we&rsquo;ll plan the layout for your roofline.")
     call = (f'<a class="btn btn-ghost" href="tel:{PHONE_TEL}">Call Now: {PHONE_DISPLAY}</a>' if PHONE_TEL else "")
-    return f"""<section class="cta" style="background-image:linear-gradient(rgba(0,24,56,.72),rgba(0,24,56,.72)),url('{rel}assets/lakeside-lighting.jpg')">
+    return f"""<section class="cta" style="background-image:linear-gradient(rgba(0,24,56,.72),rgba(0,24,56,.72)),url('{rel}assets/{img}')">
   <div class="wrap center"><h2>{heading}</h2><p>{text}</p>
   <div class="btns" style="justify-content:center;margin-top:10px"><a class="btn" href="{rel}contact-us/">Get a Free Quote</a>{call}</div></div></section>"""
 
@@ -270,7 +270,7 @@ def home():
   <div><h2>Why Homeowners Choose <span class="hl">Permanent Lighting</span></h2>
   <p>Hanging lights every year is a chore. Permanent lighting gives you a polished look all year and the freedom to change it whenever you like.</p>
   <ul><li>No more hanging and taking down lights every year</li><li>Custom layout planned for your roofline</li><li>Colors, brightness, and schedules from your phone</li><li>Residential and commercial installs</li><li>Free, no-obligation quotes</li><li>Locally owned in Lancaster, PA</li></ul></div>
-  <div class="collage"><img class="big" src="assets/permanent-lighting.jpg" alt="Home with permanent roofline lighting at night" width="500" height="375" loading="lazy"><img class="small" src="assets/lakeside-lighting.jpg" alt="" width="300" height="200" loading="lazy"></div>
+  <div class="collage"><img class="big" src="assets/trimlight-patio-pool.jpg" alt="Backyard patio and pool with permanent roofline lighting at night" width="500" height="375" loading="lazy"><img class="small" src="assets/lakeside-lighting.jpg" alt="" width="300" height="200" loading="lazy"></div>
 </div></section>
 
 {trimlight(rel, "home")}
@@ -282,7 +282,7 @@ def home():
   <p class="center">Still have questions? Take a look at the FAQ or send us a quote request anytime.</p>{faq_html}</div></section>
 
 {xpromo(rel)}
-{cta(rel)}
+{cta(rel, img="trimlight-pool-night.jpg")}
 """ + bottom(rel)
     write("index.html", html)
 
@@ -305,7 +305,7 @@ def pl_page():
   {FEATURES_UL}
   <h4>How It Works:</h4>
   <ol><li>Request a free quote</li><li>We plan the layout for your roofline</li><li>We install the low-profile track and lights</li><li>You control colors and schedules from your phone</li></ol></div>
-  <div><img class="photo" src="../assets/permanent-lighting.jpg" alt="Permanent roofline lighting" loading="lazy"><img class="photo" style="margin-top:20px" src="../assets/lakeside-lighting.jpg" alt="Lakeside home with permanent lighting" loading="lazy"></div>
+  <div><img class="photo" src="../assets/permanent-lighting.jpg" alt="Permanent roofline lighting" loading="lazy"><img class="photo" style="margin-top:20px" src="../assets/trimlight-pool-night.jpg" alt="Backyard pool and patio lit by permanent roofline lighting at night" loading="lazy"></div>
 </section>
 {trimlight(rel, "pl")}
 {quote_section(rel)}
@@ -329,16 +329,16 @@ def about():
   <div><h2>Locally Owned, Carefully Installed</h2>
   <p>Hooks Permanent Lighting is a locally owned company that designs and installs permanent roofline lighting for homes and businesses in Lancaster, PA.</p>
   <p>We started Hooks Permanent Lighting because we saw how much homeowners love great lighting &mdash; and how much they dislike hanging it every year. Permanent lighting solves that, and we want every install to look clean, work reliably, and be easy to use.</p></div>
-  <div><img class="photo" src="../assets/permanent-lighting.jpg" alt="Home with permanent roofline lighting" loading="lazy"></div>
+  <div><img class="photo" src="../assets/trimlight-home-dusk.jpg" alt="Home with permanent roofline lighting at dusk" loading="lazy"></div>
 </section>
 <section class="gray pad"><div class="wrap two">
-  <div><img class="photo" src="../assets/lakeside-lighting.jpg" alt="Lakeside home with permanent lighting" loading="lazy"></div>
+  <div><img class="photo" src="../assets/trimlight-patio-pool.jpg" alt="Covered patio with permanent roofline lighting" loading="lazy"></div>
   <div><h2>Our Values</h2>
   <p>Our work is guided by a few simple values. We believe honesty builds trust, hard work earns respect, and taking ownership leads to better results. These values shape how we quote, install, and support every customer.</p>
   <ul><li>Integrity in communication and transparent pricing</li><li>Personal responsibility for every job we take on</li><li>Strong work ethic with no shortcuts</li><li>Respect for every home, property, and customer</li></ul></div>
 </div></section>
 {trimlight(rel, "about")}
-{cta(rel, "Let&rsquo;s Light Up Your Home", "Request a free quote and we&rsquo;ll plan the layout for your roofline.")}
+{cta(rel, "Let&rsquo;s Light Up Your Home", "Request a free quote and we&rsquo;ll plan the layout for your roofline.", img="permanent-lighting.jpg")}
 """ + bottom(rel)
     write("about-us/index.html", html)
 
@@ -356,7 +356,7 @@ def contact():
   <div><h2>Get a Free Quote</h2><p>Tell us about your home and we&rsquo;ll get back to you with a quote.</p>{jobber_embed()}</div>
   <div><h2>Reliable Permanent Lighting, Installed Right.</h2>
   <p>Ready to get started? Send us a quote request and we&rsquo;ll plan the layout for your roofline.</p>
-  <img class="photo" src="../assets/permanent-lighting.jpg" alt="Home with permanent roofline lighting" loading="lazy">
+  <img class="photo" src="../assets/trimlight-home-dusk.jpg" alt="Home with permanent roofline lighting at dusk" loading="lazy">
   <h4>Service Area:</h4><p>{SERVICE_AREA}</p>
   {"<h4>Contact:</h4>" + contact_block(rel) if (PHONE_TEL or EMAIL) else ""}</div>
 </section>
