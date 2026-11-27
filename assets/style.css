@@ -125,3 +125,20 @@ details p{margin:12px 0 0}
 @media(max-width:800px){.features,.steps{grid-template-columns:1fr}.brand .b1{font-size:1.6rem}}
 .wrap.pad{padding-left:40px;padding-right:40px}
 @media(max-width:800px){.wrap.pad{padding-left:22px;padding-right:22px}}
+
+/* ---- Trimlight brand sections ---- */
+.tl{padding:90px 0}
+.tl .eyebrow{color:rgba(255,255,255,.75);margin-top:0}
+.tl.light .eyebrow{color:#555}
+.tl-logo{width:min(340px,80%);height:auto;margin:0 0 26px}
+.tl h2 .y{color:var(--yellow)}
+.tl ul{margin-bottom:1.4em}
+.tl-note{font-size:.85rem;opacity:.8}
+.tl-media{position:relative;padding-bottom:36px}
+.tl-media .photo{aspect-ratio:3/2;object-fit:cover}
+.tl-badge{width:170px;height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+.tl-media .tl-badge{position:absolute;left:-26px;bottom:0}
+.tl-badges{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.tl-badges .tl-logo{width:min(360px,100%);margin:0}
+.tl-badges .tl-badge{width:200px}
+@media(max-width:800px){.tl{padding:60px 0}.tl-media .tl-badge{left:8px;width:130px}}

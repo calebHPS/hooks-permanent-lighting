@@ -154,6 +154,50 @@ def xpromo(rel):
   <a class="btn" href="{PARENT_URL}/">Visit {PARENT_NAME}</a></div></section>"""
 
 
+def trimlight(rel, variant):
+    """Trimlight brand / authorized-dealer / lifetime-warranty section.
+    variant: "home" (navy, lead photo), "pl" (light, patio photo), "about" (navy, dealer story).
+    Logos and badge come from the Trimlight marketing library (assets/trimlight-*)."""
+    dealer_w = (f'<img class="tl-logo" src="{rel}assets/trimlight-authorized-dealer-white.png" '
+                'alt="Trimlight Authorized Dealer logo" width="900" height="480" loading="lazy">')
+    dealer_b = (f'<img class="tl-logo" src="{rel}assets/trimlight-authorized-dealer-black.png" '
+                'alt="Trimlight Authorized Dealer logo" width="900" height="447" loading="lazy">')
+    badge = (f'<img class="tl-badge" src="{rel}assets/trimlight-lifetime-warranty-badge.png" '
+             'alt="Trimlight lifetime product warranty badge" width="520" height="561" loading="lazy">')
+    note = ('<p class="tl-note">Warranty terms and coverage are provided by Trimlight. '
+            'Ask us for the details with your free quote.</p>')
+    if variant == "home":
+        return f"""<section class="tl navy"><div class="wrap two">
+  <div class="tl-copy">{dealer_w}
+  <p class="eyebrow">Our Brand</p>
+  <h2>Quality You Can Count On: <span class="y">Trimlight</span></h2>
+  <p>Hooks Permanent Lighting is an authorized Trimlight dealer serving Lancaster County. We install Trimlight, an established permanent lighting brand, and Trimlight offers a lifetime product warranty.</p>
+  <ul><li>Authorized Trimlight dealer in Lancaster County</li><li>Lifetime product warranty from Trimlight</li><li>App-controlled colors, patterns, and schedules</li><li>Low-profile track that blends into your roofline</li></ul>
+  {note}
+  <p><a class="btn" href="{rel}permanent-lighting/">See How Permanent Lighting Works</a></p></div>
+  <div class="tl-media"><img class="photo" src="{rel}assets/trimlight-home-dusk.jpg" alt="Home with Trimlight permanent roofline lighting at dusk" width="1600" height="1066" loading="lazy">{badge}</div>
+</div></section>"""
+    if variant == "pl":
+        return f"""<section class="tl light gray"><div class="wrap two">
+  <div class="tl-media"><img class="photo" src="{rel}assets/trimlight-patio-pool.jpg" alt="Backyard patio and pool with Trimlight permanent lighting along the roofline" width="1400" height="980" loading="lazy">{badge}</div>
+  <div class="tl-copy">{dealer_b}
+  <h2>Installed with <span class="hl">Trimlight</span></h2>
+  <p>We are an authorized Trimlight dealer, so your permanent lighting is a quality brand-name system installed locally in Lancaster County by Hooks Permanent Lighting.</p>
+  <ul><li>Trimlight lifetime product warranty</li><li>Colors, patterns, and schedules from your phone</li><li>Clean, low-profile track along your roofline</li></ul>
+  {note}
+  <p><a class="btn" href="{rel}contact-us/">Get a Free Quote</a></p></div>
+</div></section>"""
+    return f"""<section class="tl navy"><div class="wrap two">
+  <div class="tl-copy"><p class="eyebrow">Authorized Dealer</p>
+  <h2>Your Lancaster County <span class="y">Trimlight</span> Dealer</h2>
+  <p>Hooks Permanent Lighting is an authorized Trimlight dealer serving Lancaster County, PA. That means we bring a quality permanent lighting brand to your home, installed by a local team that takes ownership of every job.</p>
+  <p>Trimlight backs its product with a lifetime product warranty, and you get a local company you can call for your install.</p>
+  {note}
+  <p><a class="btn" href="{rel}permanent-lighting/">Explore Permanent Lighting</a></p></div>
+  <div class="tl-badges">{dealer_w}{badge}</div>
+</div></section>"""
+
+
 def page_title(h):
     return f'<section class="page-title navy"><div class="wrap"><h1 class="y">{h}</h1></div></section>'
 
@@ -185,8 +229,8 @@ STEPS = [("Request a free quote", "Tell us about your home online."),
 def home():
     rel = ""
     title = f"Permanent Lighting Installation Lancaster PA | {NAME}"
-    desc = ("Permanent roofline lighting in Lancaster, PA. App-controlled colors and schedules for holidays, "
-            "game days, and everyday curb appeal. Request a free quote from Hooks Permanent Lighting.")
+    desc = ("Authorized Trimlight dealer in Lancaster, PA. Permanent roofline lighting with app-controlled colors "
+            "and schedules, backed by the Trimlight lifetime product warranty. Request a free quote.")
     steps = "".join(f"<li><strong>{a}</strong>{b}</li>" for a, b in STEPS)
     feats = [("Low-Profile Roofline Track", "A clean, low-profile track mounted along your roofline that blends into your home&rsquo;s look."),
              ("App-Controlled Colors", "Change colors, brightness, and patterns from your phone in seconds."),
@@ -229,6 +273,8 @@ def home():
   <div class="collage"><img class="big" src="assets/permanent-lighting.jpg" alt="Home with permanent roofline lighting at night" width="500" height="375" loading="lazy"><img class="small" src="assets/lakeside-lighting.jpg" alt="" width="300" height="200" loading="lazy"></div>
 </div></section>
 
+{trimlight(rel, "home")}
+
 <section class="pad"><div class="wrap"><h2 class="center">How It Works</h2><ol class="steps">{steps}</ol>
   <p class="center" style="margin-top:50px"><a class="btn" href="contact-us/">Get a Free Quote</a></p></div></section>
 
@@ -261,6 +307,7 @@ def pl_page():
   <ol><li>Request a free quote</li><li>We plan the layout for your roofline</li><li>We install the low-profile track and lights</li><li>You control colors and schedules from your phone</li></ol></div>
   <div><img class="photo" src="../assets/permanent-lighting.jpg" alt="Permanent roofline lighting" loading="lazy"><img class="photo" style="margin-top:20px" src="../assets/lakeside-lighting.jpg" alt="Lakeside home with permanent lighting" loading="lazy"></div>
 </section>
+{trimlight(rel, "pl")}
 {quote_section(rel)}
 {xpromo(rel)}
 {cta(rel, text="Permanent lighting is installed and serviced by Hooks Permanent Lighting. Reliable local service you can trust.")}
@@ -290,6 +337,7 @@ def about():
   <p>Our work is guided by a few simple values. We believe honesty builds trust, hard work earns respect, and taking ownership leads to better results. These values shape how we quote, install, and support every customer.</p>
   <ul><li>Integrity in communication and transparent pricing</li><li>Personal responsibility for every job we take on</li><li>Strong work ethic with no shortcuts</li><li>Respect for every home, property, and customer</li></ul></div>
 </div></section>
+{trimlight(rel, "about")}
 {cta(rel, "Let&rsquo;s Light Up Your Home", "Request a free quote and we&rsquo;ll plan the layout for your roofline.")}
 """ + bottom(rel)
     write("about-us/index.html", html)
