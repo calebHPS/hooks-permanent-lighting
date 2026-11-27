@@ -45,9 +45,9 @@ body:not(.home) .site-header{position:relative;background:var(--navy)}
 .hero p{max-width:580px;font-size:1.05rem;margin-top:60px}
 .hero .btn-ghost{padding:14px 28px}
 .about{padding:110px 40px}
-.frame{position:relative;padding:0 0 38px 38px}
-.frame:before{content:"";position:absolute;inset:0 52px 0 0;border:9px solid var(--yellow);border-top-width:9px}
-.frame img{position:relative;margin:50px 0 0 62px;width:calc(100% - 114px);border-radius:6px}
+.frame{position:relative;padding:0}
+.frame:before{content:"";position:absolute;inset:0;border:9px solid var(--yellow);pointer-events:none}
+.frame img{position:relative;display:block;margin:34px;width:calc(100% - 68px);border-radius:6px}
 .why{padding:90px 0 140px}
 .why ul{padding-left:1.3em}
 .collage{position:relative;min-height:600px}
